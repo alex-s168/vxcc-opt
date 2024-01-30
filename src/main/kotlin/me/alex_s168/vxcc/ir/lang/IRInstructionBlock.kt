@@ -1,0 +1,17 @@
+package me.alex_s168.me.alex_s168.vxcc.ir.lang
+
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
+
+@Serializable
+data class IRInstructionBlock(
+    /**
+     * Is this the root block?
+     */
+    val global: Boolean,
+
+    val children: MutableList<IRElement>
+): IRElement {
+    @Transient
+    var parent: IRInstructionBlock? = null
+}

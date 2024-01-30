@@ -1,0 +1,13 @@
+package me.alex_s168.me.alex_s168.vxcc.ir.lang
+
+import kotlinx.serialization.Polymorphic
+import kotlinx.serialization.Serializable
+
+@Polymorphic
+@Serializable
+class IRDeref(
+    val expr: IRElement,
+    val resultType: String,
+
+    val volatile: Boolean,
+): IRElement
