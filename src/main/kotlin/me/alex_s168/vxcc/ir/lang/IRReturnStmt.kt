@@ -7,4 +7,9 @@ import kotlinx.serialization.Serializable
 @Polymorphic
 class IRReturnStmt(
     val value: IRElement?,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRReturnStmt(
+            value?.copyRenamed(transform)
+        )
+}

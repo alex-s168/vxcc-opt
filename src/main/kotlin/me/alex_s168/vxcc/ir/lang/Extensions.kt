@@ -20,8 +20,10 @@ fun IRInstructionBlock.functions(): Sequence<IRFunctionDefinition> =
 
 fun IRInstructionBlock.variables(): Sequence<IRVariableDefinition> =
     this.withAllParents()
-        .flatMap { it.children }
-        .filterIsInstance<IRVariableDefinition>()
+        .flatMap { it.children + it }
+        .filterIsInstance<IRVariableDefinition>() +
+    this.functions()
+        .flatMap { it.args }
 
 fun IRInstructionBlock.types(): Sequence<IRTypeDefinition> =
     this.withAllParents()
@@ -40,3 +42,22 @@ fun IRElement.willStopFunctionFlow(parent: IRInstructionBlock): Boolean =
         is IRInstructionBlock -> this.children.any { it.willStopFunctionFlow(this) }
         else -> false
     }
+
+// TODO: this is actually target-dependent but for now we'll just assume 5 bytes for any instruction
+fun IRElement.calculateSizeCost(parent: IRInstructionBlock): Int =
+    when (this) {
+        is IRTypeDefinition -> size
+        is IRVariableDefinition -> parent.types().find { it.name == typ }?.size ?: 0
+        is IRFunctionDefinition -> body?.let { it.calculateSizeCost(it) } ?: 0
+        is IRInstructionBlock -> children.sumOf { it.calculateSizeCost(this) }
+        else -> 5
+    }
+
+fun IRInstructionBlock.knownSymbols(
+    dest: MutableList<String> = mutableListOf()
+): MutableList<String> {
+    dest += this.functions().map { it.name }
+    dest += this.variables().mapNotNull { it.name }
+    dest += this.types().map { it.name }
+    return dest
+}

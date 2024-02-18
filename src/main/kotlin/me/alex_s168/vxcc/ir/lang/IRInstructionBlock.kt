@@ -14,4 +14,10 @@ data class IRInstructionBlock(
 ): IRElement {
     @Transient
     var parent: IRInstructionBlock? = null
+
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRInstructionBlock(
+            global,
+            children.map { it.copyRenamed(transform) }.toMutableList()
+        )
 }

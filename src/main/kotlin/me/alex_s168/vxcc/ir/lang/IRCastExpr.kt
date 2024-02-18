@@ -11,4 +11,10 @@ import kotlinx.serialization.Serializable
 class IRCastExpr(
     val value: IRElement,
     val typ: String?,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRCastExpr(
+            value.copyRenamed(transform),
+            typ
+        )
+}

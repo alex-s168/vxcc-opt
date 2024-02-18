@@ -15,13 +15,15 @@ private val optimizations = listOf<OptPass>(
     RemoveCodeAfterExit()
 )
 
+// TODO: SAVE REFERENCES TO RESOLVED VARIABLES IN VARREF
+
 fun main() {
     val ircode = IRInstructionBlock(
         global = true,
         children = mutableListOf(
             IRTypeDefinition(
                 name = "i8",
-                size = 8,
+                size = 4,
                 align = 0,
                 float = false,
                 signed = true,
@@ -30,7 +32,9 @@ fun main() {
 
             IRFunctionDefinition(
                 name = "putc",
-                args = listOf("i8"),
+                args = listOf(
+                    IRVariableDefinition("chr", "i8")
+                ),
                 ret = null,
                 inline = false,
                 extern = true,

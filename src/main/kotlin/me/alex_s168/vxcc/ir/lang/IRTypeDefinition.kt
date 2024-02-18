@@ -12,4 +12,14 @@ class IRTypeDefinition(
     val float: Boolean,
     val signed: Boolean,
     val pointer: Boolean,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRTypeDefinition(
+            transform(name),
+            size,
+            align,
+            float,
+            signed,
+            pointer
+        )
+}

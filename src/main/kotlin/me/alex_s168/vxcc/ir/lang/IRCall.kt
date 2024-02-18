@@ -12,4 +12,14 @@ class IRCall(
 
     val abi: String?,
     val noinline: Boolean,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRCall(
+            func.copyRenamed(transform),
+            args.map { it.copyRenamed(transform) },
+            resultType,
+
+            abi,
+            noinline
+        )
+}

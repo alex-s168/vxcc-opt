@@ -8,4 +8,10 @@ import kotlinx.serialization.Serializable
 class IRAssignStmt(
     val left: IRElement,
     val right: IRElement,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRAssignStmt(
+            left.copyRenamed(transform),
+            right.copyRenamed(transform)
+        )
+}

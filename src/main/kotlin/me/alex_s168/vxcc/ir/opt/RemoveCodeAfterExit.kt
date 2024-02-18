@@ -4,6 +4,7 @@ import me.alex_s168.me.alex_s168.vxcc.ir.lang.IRInstructionBlock
 import me.alex_s168.me.alex_s168.vxcc.ir.lang.functions
 import me.alex_s168.me.alex_s168.vxcc.ir.lang.willStopFunctionFlow
 
+// TODO: forgot if you do:  var x = call()
 class RemoveCodeAfterExit: OptPass {
     override fun runOnGlobal(block: IRInstructionBlock) {
         for (function in block.functions()) {

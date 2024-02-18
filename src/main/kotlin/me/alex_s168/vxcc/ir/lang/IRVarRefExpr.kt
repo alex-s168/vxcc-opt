@@ -8,4 +8,10 @@ import kotlinx.serialization.Serializable
 class IRVarRefExpr(
     val name: String,
     val reinterpret: String?,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRVarRefExpr(
+            transform(name),
+            reinterpret
+        )
+}

@@ -9,4 +9,11 @@ class IRConstDefinition(
     val name: String,
     val typ: String,
     val value: IRElement,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRConstDefinition(
+            transform(name),
+            typ,
+            value.copyRenamed(transform)
+        )
+}

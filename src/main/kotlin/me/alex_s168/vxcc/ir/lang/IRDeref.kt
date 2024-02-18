@@ -10,4 +10,12 @@ class IRDeref(
     val resultType: String,
 
     val volatile: Boolean,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRDeref(
+            expr.copyRenamed(transform),
+            resultType,
+
+            volatile
+        )
+}

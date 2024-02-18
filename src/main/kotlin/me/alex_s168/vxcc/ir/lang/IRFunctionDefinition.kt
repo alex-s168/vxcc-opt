@@ -8,9 +8,12 @@ import kotlinx.serialization.Serializable
 class IRFunctionDefinition(
     val name: String,
 
-    val args: List<String>,
+    val args: List<IRVariableDefinition>,
     val ret: String?,
 
+    /**
+     * Always inline this function
+     */
     val inline: Boolean,
     val extern: Boolean,
     val noinline: Boolean,
@@ -23,4 +26,25 @@ class IRFunctionDefinition(
     val align: Int,
 
     val body: IRInstructionBlock?,
-): IRElement
+): IRElement {
+    override fun copyRenamed(transform: (String) -> String): IRElement =
+        IRFunctionDefinition(
+            transform(name),
+
+            args.map { it.copyRenamed(transform) as IRVariableDefinition },
+            ret,
+
+            inline,
+            extern,
+            noinline,
+            noreturn,
+            pure,
+            export,
+
+            abi,
+            section,
+            align,
+
+            body?.copyRenamed(transform) as IRInstructionBlock?
+        )
+}
